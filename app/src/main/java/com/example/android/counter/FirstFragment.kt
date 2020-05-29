@@ -18,40 +18,53 @@ import com.example.android.counter.databinding.FragmentFirstBinding
  */
 class FirstFragment : Fragment() {
 
-//private lateinit var binding: FragmentFirstBinding
+    private var _binding: FragmentFirstBinding? = null
+    // This property is only valid between onCreateView and
+// onDestroyView.
+    private val binding get() = _binding!!
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_first, container, false)
-//        val binding = DataBindingUtil.inflate<FragmentFirstBinding>(inflater,
-//            R.layout.fragment_first,container,false)
-//        return binding.root
+        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
            // binding.buttonCount.setOnClickListener {}
-        view.findViewById<Button>(R.id.button_count).setOnClickListener {
+        binding.buttonCountUp.setOnClickListener {
             countUp(view)
         }
 
-        view.findViewById<Button>(R.id.button_random).setOnClickListener {
-//
+
+        binding.buttonCountDown.setOnClickListener {
+            countDown(view)
+        }
+
+        binding.buttonRandom.setOnClickListener {
+            if (binding.number.text.toString().toInt() > 0) {
             val showCountTextView = view.findViewById<TextView>(R.id.number)
-//            val currentCount = showCountTextView.text.toString().toInt()
-//            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount)
-//            findNavController().navigate(action)
+            val currentCount = showCountTextView.text.toString().toInt()
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(currentCount)
+            findNavController().navigate(action)}
+            else{
+                // create a Toast with some text, to appear for a short time
+                val myToast = Toast.makeText(context, "Please make count positive getting a random number", Toast.LENGTH_SHORT)
+                // show the Toast
+                myToast.show()
+
+            }
 
 
         }
 
 
-
-
-        view.findViewById<Button>(R.id.button_toast).setOnClickListener {
+       binding.buttonToast.setOnClickListener {
             // create a Toast with some text, to appear for a short time
             val myToast = Toast.makeText(context, "Hello Toast!", Toast.LENGTH_SHORT)
             // show the Toast
@@ -60,24 +73,28 @@ class FirstFragment : Fragment() {
     }
 
     private fun countUp (view: View){
-//        val showCountTextView = binding.number
-//        val countString= showCountTextView.text.toString()
-//        var count= countString.toInt()
-//        count ++
-//        showCountTextView.text= count.toString()
+        val showCountTextView = binding.number
+        val countString= showCountTextView.text.toString()
+        var count= countString.toInt()
+        count ++
+        showCountTextView.text= count.toString()
 
-        // Get the text view
-        val showCountTextView = view.findViewById<TextView>(R.id.number)
 
-        // Get the value of the text view.
-        val countString = showCountTextView.text.toString()
+    }
 
-        // Convert value to a number and increment it
-        var count = countString.toInt()
-        count++
+    private fun countDown (view: View){
+        val showCountTextView = binding.number
+        val countString= showCountTextView.text.toString()
+        var count= countString.toInt()
+        count --
+        showCountTextView.text= count.toString()
 
-        // Display the new value in the text view.
-        showCountTextView.text = count.toString()
 
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
