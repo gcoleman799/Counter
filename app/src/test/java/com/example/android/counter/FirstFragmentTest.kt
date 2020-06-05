@@ -3,54 +3,40 @@
 package com.example.android.counter
 
 
-
+import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.testing.launchFragmentInContainer
+import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.runner.AndroidJUnit4
+import kotlinx.android.synthetic.main.fragment_first.view.*
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
 
-import androidx.test.espresso.matcher.ViewMatchers.withText
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import org.junit.Rule
-
 
 @RunWith(AndroidJUnit4::class)
-
 class FirstFragmentTest {
-    private val STRING_TO_BE_TYPED = "Espresso"
-//
-//        @Rule
-//    var activityScenarioRule =
-//        ActivityScenarioRule(
-//            MainActivity::class.java
-//        )
-//
-    @Test fun testEventFragment() {
+
+    @Test
+    fun testEventFragment() {
+        // Given an instance of FirstFragment
         val scenario = launchFragmentInContainer<FirstFragment>()
-        scenario.recreate()
-        onView(withId(R.id.button_toast))
-            .perform(click())
+            .moveToState(Lifecycle.State.RESUMED)
+
+        scenario.onFragment { fragment ->
+            val countButton = fragment.view!!.findViewById<View>(R.id.button_count_up)
+            val numberView = fragment.view!!.findViewById<TextView>(R.id.number)
+
+            // ...when the count is 0 and the up button is clicked...
+            countButton.performClick()
+
+            // The counter goes from 0 to 1
+            Assert.assertEquals(numberView.text, "1")
+        }
     }
-//    @Test
-//    fun onViewCreated() {
-//        onView(withId(R.id.button_toast))
-//
-//
-//    }
-//
-//
-//    @Test
-//    fun changeText_sameActivity() {
-//        //locate the button and click it
-//        onView(withId(R.id.button_submit)).perform(click())
-//
-//        // Check that the text was changed.
-//        onView(withId(R.id.numberName)).check(matches(withText(STRING_TO_BE_TYPED)));
-//    }
 
 }
