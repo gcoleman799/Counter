@@ -41,6 +41,10 @@ class FirstFragment : Fragment() {
             countUp(view)
         }
 
+        binding.buttonSubmit.setOnClickListener {
+            binding.numberName.text= "Espresso"
+        }
+
 
         binding.buttonCountDown.setOnClickListener {
             countDown(view)
@@ -91,6 +95,8 @@ class FirstFragment : Fragment() {
 
 
     }
+
+
 
 
     override fun onDestroyView() {

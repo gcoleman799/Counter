@@ -14,4 +14,5 @@
     <string name="number">0</string>
     <string name="count">Count Up</string>
     <string name="countDown">Count Down</string>
+    <string name="submit">submit</string>
 </resources>
